@@ -24,7 +24,7 @@ class SemanticReleaseIntegrationAuxScriptSpec extends SemanticReleasePluginInteg
 
     @Override
     def setupGradleWrapper() {
-        gradleVersion = '2.1'
+        gradleVersion = '4.7'
         super.setupGradleWrapper()
     }
 
