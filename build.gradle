@@ -84,4 +84,11 @@ test {
 
 repositories {
     maven { url 'https://jitpack.io' }
+    maven {
+        url "${artifactory_contextUrl}/plugins-release" //The Artifactory (preferably virtual) repository to resolve from
+        credentials {               //Optional resolver credentials (leave out to use anonymous resolution)
+            username = artifactory_user
+            password = artifactory_password
+        }
+    }
 }
