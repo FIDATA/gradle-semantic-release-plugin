@@ -33,9 +33,11 @@ buildscript {
 apply from: 'compile-dependencies.gradle'
 
 dependencies {
-    testCompile 'com.netflix.nebula:nebula-test:2.2.2', {
+    testCompile 'com.netflix.nebula:nebula-test:6.5.0', {
         exclude module: 'groovy-all'
+        exclude module: 'org.spockframework'
     }
+    testCompile 'com.github.spockframework.spock:spock-bom:master'
     testCompile 'org.apache.commons:commons-exec:1.3'
 }
 
@@ -78,4 +80,8 @@ test {
         systemProperty 'integTest', 'true'
     maxHeapSize = '512m'
     jvmArgs '-XX:MaxPermSize=256m'
+}
+
+repositories {
+    maven { url 'https://jitpack.io' }
 }
