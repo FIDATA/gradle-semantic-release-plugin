@@ -35,8 +35,8 @@ import org.slf4j.LoggerFactory
  */
 class BaseReleasePlugin implements Plugin<Project> {
 	private static final Logger logger = LoggerFactory.getLogger(BaseReleasePlugin)
-	private static final String PREPARE_TASK_NAME = 'prepare'
-	private static final String RELEASE_TASK_NAME = 'release'
+	static final String PREPARE_TASK_NAME = 'prepare'
+	static final String RELEASE_TASK_NAME = 'release'
 
 	void apply(Project project) {
 		def extension = project.extensions.create('release', ReleasePluginExtension, project)
