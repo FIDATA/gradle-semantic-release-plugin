@@ -24,7 +24,9 @@ import org.ajoberstar.grgit.Grgit
 import spock.lang.Specification
 import spock.lang.Subject
 import spock.lang.Unroll
+import spock.lang.Ignore
 
+@Ignore
 class SemanticReleaseNormalStrategySpec extends Specification {
 
     Grgit grgit = Mock()
