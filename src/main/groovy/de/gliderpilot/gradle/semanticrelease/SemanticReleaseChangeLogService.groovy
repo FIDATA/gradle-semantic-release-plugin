@@ -181,7 +181,6 @@ class SemanticReleaseChangeLogService {
         }.groupBy(component).sort { a, b -> a.key <=> b.key }
     }
 
-    @PackageScope
     @Memoized
     List<Commit> commits(Version previousVersion) {
         grgit.log {
