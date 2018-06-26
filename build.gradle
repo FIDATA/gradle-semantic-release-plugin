@@ -70,10 +70,8 @@ cleanTest {
   delete new File(buildDir, 'nebulatest')
 }
 
-if (!version.toString().endsWith('-SNAPSHOT'))
-    publish.dependsOn publishPlugins, bintrayUpload
-else if ((System.getenv('TRAVIS_PULL_REQUEST') ?: "false") == "false")
-    publish.dependsOn artifactoryPublish
+artifactoryPublish.dependsOn publish
+tasks['release'].finalizedBy artifactoryPublish
 
 test {
     if (gradle.startParameter.taskNames.find { ['integTest', 'release'].contains(it) })
