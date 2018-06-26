@@ -48,7 +48,7 @@ sourceSets {
     }
 }
 
-group = 'de.gliderpilot.gradle.semantic-release'
+group = 'org.fidata.gradle.semantic-release'
 
 semanticRelease {
     repo.ghToken = project.ext.ghToken
