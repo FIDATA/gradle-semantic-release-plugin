@@ -21,7 +21,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.1'
-        classpath 'org.jfrog.buildinfo:build-info-extractor-gradle:4.4.2'
+        classpath 'org.jfrog.buildinfo:build-info-extractor-gradle:4.7.5'
         classpath 'nl.javadude.gradle.plugins:license-gradle-plugin:0.11.0'
         classpath 'net.saliman:gradle-cobertura-plugin:2.3.2'
         classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.6.3'
