@@ -1,0 +1,47 @@
+<%
+def commitText(commit) {
+    service.subject(commit)
+}
+def changeGroup(String title, group) {
+    if (group) {
+        StringBuilder builder = new StringBuilder()
+        builder.append "$title:\n"
+        builder.append '\n'
+        group.each { component, commits ->
+            if (!component) {
+                commits.each { commit ->
+                    builder.append "* ${commitText(commit)}\n"
+                }
+            } else {
+                builder.append "* $component:"
+                if (component && commits.size() == 1)
+                    builder.append " ${commitText(commits[0])}\n"
+                else {
+                    builder.append '\n'
+                    commits.each { commit ->
+                        builder.append "    * ${commitText(commit)}\n"
+                    }
+                }
+            }
+        }
+        return builder.toString()
+    }
+}
+print([
+    changeGroup("Bug Fixes", fix),
+    changeGroup("Features", feat),
+    changeGroup("Performance Improvements", perf),
+    changeGroup("Reverts", revert),
+    {
+        if (breaks) {
+            StringBuilder builder = new StringBuilder()
+            builder.append "BREAKING CHANGES:\n"
+            builder.append '\n'
+            breaks.each {
+                builder.append "* $it\n"
+            }
+            builder.toString()
+        }
+    }()
+].findAll().join('\n'))
+%>

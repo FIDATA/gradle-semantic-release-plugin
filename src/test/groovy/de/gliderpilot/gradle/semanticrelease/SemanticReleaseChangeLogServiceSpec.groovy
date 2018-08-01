@@ -205,6 +205,42 @@ class SemanticReleaseChangeLogServiceSpec extends Specification {
         changeLogService.changeLog(commits.collect(asCommit), new ReleaseVersion(previousVersion: '1.0.0', version: '2.0.0', createTag: true)).toString().normalize() == expected
     }
 
+    def "changeLogTxt is generated"() {
+        given:
+        grgit = Grgit.open()
+        repo = new GithubRepo(grgit)
+        changeLogService = new SemanticReleaseChangeLogService(grgit, repo, tagStrategy)
+        String mnemo = repo.mnemo
+
+        when:
+        def commits = [
+                'fix(component1): foo\n\nCloses #123, #124',
+                'fix(component1): bar',
+                'fix(component2): baz\n\nCloses #123\nCloses #124',
+                'fix: no component\n\nCloses #456, #789',
+                'feat: baz\n\nCloses #159\n\nBREAKING CHANGE: This and that', 'foo bar']
+        def expected = """\
+            Bug Fixes:
+
+            * no component
+            * component1:
+                * foo
+                * bar
+            * component2: baz
+
+            Features:
+
+            * baz
+
+            BREAKING CHANGES:
+
+            * This and that
+        """.stripIndent()
+
+        then:
+        changeLogService.changeLogTxt(commits.collect(asCommit), new ReleaseVersion(previousVersion: '1.0.0', version: '2.0.0', createTag: true)).toString().normalize() == expected
+    }
+
     static asCommit = { new Commit(fullMessage: it, shortMessage: it.readLines().first(), id: '123456789abc') }
 
 }

@@ -114,6 +114,26 @@ class SemanticReleaseChangeLogService {
         ])
     }
 
+    /**
+     * Create a Writable that can be used to retrieve the change log
+     * in text format.
+     */
+    Closure<Writable> changeLogTxt = { List<Commit> commits, ReleaseVersion version ->
+        String previousVersion = Version.valueOf(version.previousVersion).majorVersion ? version.previousVersion : null
+        String previousTag = tagStrategy.toTagString(previousVersion)
+        String currentTag = version.createTag ? tagStrategy.toTagString(version.version) : null
+        Template template = new SimpleTemplateEngine().createTemplate(getClass().getResource('/CHANGELOG.txt'))
+        template.make([
+                service   : this,
+                version   : version.version,
+                fix       : byTypeGroupByComponent(commits, 'fix'),
+                feat      : byTypeGroupByComponent(commits, 'feat'),
+                perf      : byTypeGroupByComponent(commits, 'perf'),
+                revert    : byTypeGroupByComponent(commits, 'revert'),
+                breaks    : commits.collect(breaks).findAll { it }
+        ])
+    }
+
     @PackageScope
     List<String> closesKeywords = ['Closes', 'Fixes']
 
