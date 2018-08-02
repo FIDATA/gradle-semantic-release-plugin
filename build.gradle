@@ -33,6 +33,7 @@ buildscript {
 apply from: 'compile-dependencies.gradle'
 
 dependencies {
+    // testCompile localGroovy()
     testCompile 'com.netflix.nebula:nebula-test:6.5.0', {
         exclude module: 'groovy-all'
         exclude module: 'org.spockframework'
@@ -66,6 +67,8 @@ test {
     dependsOn cleanTest
 }
 
+println cleanTest.getClass().getName()
+
 cleanTest {
   delete new File(buildDir, 'nebulatest')
 }
@@ -78,6 +81,10 @@ test {
         systemProperty 'integTest', 'true'
     maxHeapSize = '512m'
     jvmArgs '-XX:MaxPermSize=256m'
+}
+
+wrapper {
+  gradleVersion = '4.9'
 }
 
 repositories {
