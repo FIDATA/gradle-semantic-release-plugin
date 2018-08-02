@@ -18,7 +18,8 @@ package org.ajoberstar.gradle.git.release.base
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-
+import org.gradle.api.Task
+import org.gradle.util.GradleVersion
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -63,9 +64,15 @@ class BaseReleasePlugin implements Plugin<Project> {
 			}
 		}
 
-		project.tasks.all { task ->
-			if (name != PREPARE_TASK_NAME) {
+		if (GradleVersion.current() >= GradleVersion.version('4.9')) {
+			project.tasks.matching { Task task -> task.name != PREPARE_TASK_NAME }.configureEach { Task task ->
 				task.shouldRunAfter PREPARE_TASK_NAME
+			}
+		} else {
+			project.tasks.all { task ->
+				if (name != PREPARE_TASK_NAME) {
+					task.shouldRunAfter PREPARE_TASK_NAME
+				}
 			}
 		}
 	}
